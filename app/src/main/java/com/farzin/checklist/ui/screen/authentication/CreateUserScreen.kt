@@ -25,12 +25,15 @@ import androidx.navigation.NavController
 import com.farzin.checklist.model.AuthResult
 import com.farzin.checklist.model.NetworkResult
 import com.farzin.checklist.navGraph.Screens
+import com.farzin.checklist.utils.Constants
 import com.farzin.checklist.viewModel.AuthenticationViewModel
+import com.stevdzasan.onetap.OneTapSignInState
+import com.stevdzasan.onetap.OneTapSignInWithGoogle
 
 @Composable
-fun CreateUserScreen(navController: NavController) {
+fun CreateUserScreen(navController: NavController, oneTapState: OneTapSignInState) {
 
-    CreateUser(navController)
+    CreateUser(navController, oneTapState = oneTapState)
 
 }
 
@@ -40,10 +43,13 @@ fun CreateUserScreen(navController: NavController) {
 fun CreateUser(
     navController: NavController,
     authenticationViewModel: AuthenticationViewModel = hiltViewModel(),
+    oneTapState: OneTapSignInState,
 ) {
 
     var emailValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
+
+    var googleDialogLoadingState by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -87,6 +93,52 @@ fun CreateUser(
             Text(text = "create")
         }
 
+
+        Button(
+            onClick = {
+                oneTapState.open()
+                googleDialogLoadingState = true
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp)
+        ) {
+            if (!googleDialogLoadingState) {
+                Text(text = "create with google")
+            } else {
+                Text(text = "loading")
+            }
+
+        }
+
+        OneTapSignInWithGoogle(
+            state = oneTapState,
+            clientId = Constants.WEB_Client_ID,
+            onTokenIdReceived = { tokenId ->
+                authenticationViewModel.createUserWithGoogleAuth(
+                    tokenId = tokenId,
+                    onSuccess = {
+                        googleDialogLoadingState = false
+                        navController.navigate(Screens.HomeScreen.route) {
+                            launchSingleTop = true
+                            popUpTo(Screens.CreateUserScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onFailure = { message ->
+                        googleDialogLoadingState = false
+                        authenticationViewModel.googleSignInError = message
+                    }
+                )
+            },
+            onDialogDismissed = { message ->
+
+            }
+        )
+
+
         Text(text = "login", modifier = Modifier.clickable {
             navController.navigate(
                 Screens.SignInScreen.route
@@ -101,6 +153,15 @@ fun CreateUser(
 
         if (!authenticationViewModel.isCreateUserSuccess) {
             Text(text = authenticationViewModel.createUserError)
+        }
+
+
+        if (authenticationViewModel.googleSignInLoading) {
+            Text(text = "loading")
+        }
+
+        if (!authenticationViewModel.isGoogleSignSuccess) {
+            Text(text = authenticationViewModel.googleSignInError)
         }
 
 

@@ -74,6 +74,33 @@ class AuthenticationViewModel @Inject constructor(private val repo: Authenticati
     }
 
 
+    var isGoogleSignSuccess by mutableStateOf(false)
+    var googleSignInError by mutableStateOf("")
+    var googleSignInLoading by mutableStateOf(false)
+    fun createUserWithGoogleAuth(
+        tokenId: String,
+        onSuccess:(String)->Unit,
+        onFailure:(String)->Unit
+    ){
+        googleSignInLoading = true
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.createUserWithGoogleAccount(
+                tokenId=tokenId,
+                onSuccess={id->
+                    googleSignInLoading = false
+                    isGoogleSignSuccess = true
+                    onSuccess(id)
+                },
+                onFailure = {message->
+                    googleSignInLoading = false
+                    isGoogleSignSuccess = false
+                    onFailure(message)
+                }
+            )
+        }
+    }
+
+
     fun hasUser(): Boolean = repo.hasUser()
 
     fun getUserId() = repo.getUserId()

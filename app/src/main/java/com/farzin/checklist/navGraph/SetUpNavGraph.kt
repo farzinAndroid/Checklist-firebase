@@ -7,17 +7,20 @@ import androidx.navigation.compose.composable
 import com.farzin.checklist.ui.screen.home.HomeScreen
 import com.farzin.checklist.ui.screen.authentication.CreateUserScreen
 import com.farzin.checklist.ui.screen.authentication.SignInScreen
+import com.stevdzasan.onetap.OneTapSignInState
+import com.stevdzasan.onetap.rememberOneTapSignInState
 
 @Composable
 fun SetUpNavGraph(navController: NavHostController) {
 
+    val oneTapState = rememberOneTapSignInState()
 
     NavHost(
         navController = navController,
         startDestination = Screens.CreateUserScreen.route,
     ){
         composable(Screens.CreateUserScreen.route){
-            CreateUserScreen(navController = navController)
+            CreateUserScreen(navController = navController,oneTapState)
         }
 
 
