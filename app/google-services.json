@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "27783005310",
+    "project_id": "checklist-3e54a",
+    "storage_bucket": "checklist-3e54a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27783005310:android:7129be94c3c9195c3f042f",
+        "android_client_info": {
+          "package_name": "com.farzin.checklist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5nje6oslA_RefgtqBlCEP7NOLJpZC2wo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
