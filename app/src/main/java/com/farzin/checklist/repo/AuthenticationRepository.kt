@@ -19,9 +19,10 @@ class AuthenticationRepository @Inject constructor(
 
     val currentUser: FirebaseUser? = Firebase.auth.currentUser
 
-    fun hasUser(): Boolean = Firebase.auth.currentUser != null
+    fun hasUser(): Boolean = auth.currentUser != null
 
-    fun getUserId(): String = Firebase.auth.currentUser?.uid.orEmpty()
+    fun getUserId(): String = auth.currentUser?.uid.orEmpty()
+
 
 
     suspend fun createUser(
