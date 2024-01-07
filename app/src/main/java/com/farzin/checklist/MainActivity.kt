@@ -18,8 +18,6 @@ import com.farzin.checklist.navGraph.SetUpNavGraph
 import com.farzin.checklist.ui.theme.ChecklistTheme
 import com.farzin.checklist.utils.LocaleUtils
 import dagger.hilt.android.AndroidEntryPoint
-import saman.zamani.persiandate.PersianDate
-import saman.zamani.persiandate.PersianDateFormat
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -41,10 +39,6 @@ class MainActivity : ComponentActivity() {
                         Scaffold(
                             content = {
                                 SetUpNavGraph(navController = navController)
-
-                                val pdate = PersianDate()
-                                val pdformater1 = PersianDateFormat("Y/m/d")
-                                Log.e("TAG", pdate.toString())
                             }
                         )
                     }

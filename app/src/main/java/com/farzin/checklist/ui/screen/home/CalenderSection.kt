@@ -27,9 +27,9 @@ import com.farzin.checklist.R
 import com.farzin.checklist.data.CalendarDataSource
 import com.farzin.checklist.model.CalendarUiModel
 import com.farzin.checklist.ui.theme.darkText
+import com.farzin.checklist.utils.DateHelper
+import com.farzin.checklist.utils.DigitHelper
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 @Composable
 fun CalenderSection() {
@@ -87,6 +87,10 @@ fun Header(
     onNextClick: (LocalDate) -> Unit,
 ) {
 
+    val year = DateHelper.splitWholeDate(data.selectedDate.date.toString())[0]
+    val month = DateHelper.splitWholeDate(data.selectedDate.date.toString())[1]
+    val day = DateHelper.splitWholeDate(data.selectedDate.date.toString())[2]
+    val convertedGregToPersian = DateHelper.gregorianToJalali(year,month,day)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,9 +102,7 @@ fun Header(
             text = if (data.selectedDate.isToday) {
                 stringResource(R.string.today)
             } else {
-                data.selectedDate.date.format(
-                    DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
-                )
+                DigitHelper.digitByLang(convertedGregToPersian)
             },
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.darkText,
@@ -141,7 +143,10 @@ fun Content(
 
     LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
 
+
+
         items(data.visibleDates) { date ->
+
             CalenderItem(date, onDateClickListener)
         }
 

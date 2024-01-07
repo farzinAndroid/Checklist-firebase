@@ -111,4 +111,5 @@ dependencies {
 
     // persian calendar
     implementation ("com.github.samanzamani:PersianDate:1.7.1")
+//    implementation("ir.huri:jalalicalendar:2.0.0")
 }
