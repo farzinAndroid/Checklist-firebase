@@ -1,9 +1,12 @@
 package com.farzin.checklist.ui.screen.home
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.farzin.checklist.viewModel.AuthenticationViewModel
@@ -12,9 +15,27 @@ import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun HomeScreen(navController: NavController,authenticationViewModel: AuthenticationViewModel = hiltViewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    authenticationViewModel: AuthenticationViewModel = hiltViewModel(),
+) {
 
-    Button(onClick = { Firebase.auth.signOut() }) {
-        Text(text = "12231", style = MaterialTheme.typography.titleLarge)
+    Home(authenticationViewModel, navController)
+}
+
+@Composable
+fun Home(authenticationViewModel: AuthenticationViewModel, navController: NavController) {
+
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+    ){
+
+        item { CalenderSection() }
+
     }
+
+
+
 }

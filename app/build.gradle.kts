@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.farzin.checklist"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -108,4 +108,7 @@ dependencies {
 
     // One tap compose
     implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
+
+    // persian calendar
+    implementation ("com.github.samanzamani:PersianDate:1.7.1")
 }

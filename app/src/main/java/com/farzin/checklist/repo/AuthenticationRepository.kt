@@ -1,8 +1,5 @@
 package com.farzin.checklist.repo
 
-import android.util.Log
-import com.farzin.checklist.model.AuthResult
-import com.farzin.checklist.model.NetworkResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
