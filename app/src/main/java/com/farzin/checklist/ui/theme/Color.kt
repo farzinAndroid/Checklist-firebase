@@ -20,7 +20,7 @@ val ColorScheme.mainBlue: Color
 
 val ColorScheme.mainBackground: Color
     @Composable
-    get() =  if (isSystemInDarkTheme()) Color(0xFF3a3a3a) else Color(0xFFffffff)
+    get() =  if (isSystemInDarkTheme()) Color(0xFF001330) else Color(0xFFffffff)
 
 val ColorScheme.darkText: Color
     @Composable

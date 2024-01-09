@@ -65,7 +65,7 @@ val Typography = Typography(
     ),
     displaySmall = TextStyle(//h3
         fontFamily = samim_bold,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 25.sp
     ),

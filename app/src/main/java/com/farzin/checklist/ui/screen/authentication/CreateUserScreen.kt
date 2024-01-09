@@ -1,5 +1,6 @@
 package com.farzin.checklist.ui.screen.authentication
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -131,6 +132,7 @@ fun CreateUser(
                     onFailure = {message->
                         authenticationViewModel.googleSignInError = message
                         Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+                        Log.e("TAG",authenticationViewModel.googleSignInError)
                     }
                 )
             },

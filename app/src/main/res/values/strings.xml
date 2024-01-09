@@ -5,4 +5,6 @@
     <string name="sign_in_with_google">ساخت حساب با گوگل</string>
     <string name="please_wait">لطفا صبر کنید</string>
     <string name="today">امروز</string>
+    <string name="my_tasks">وظایف من</string>
+    <string name="search">جست‌وجو</string>
 </resources>
