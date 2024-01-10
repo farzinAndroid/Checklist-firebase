@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,8 @@ import com.farzin.checklist.ui.components.MySpacerWidth
 import com.farzin.checklist.ui.theme.darkText
 import com.farzin.checklist.ui.theme.extraSmall
 import com.farzin.checklist.ui.theme.mainBackground
+import com.farzin.checklist.ui.theme.searchBackground
+import com.farzin.checklist.ui.theme.softgray
 
 @Composable
 fun SearchSection(onCardClicked:()->Unit) {
@@ -41,12 +44,13 @@ fun SearchSection(onCardClicked:()->Unit) {
     ) {
         Card(
             modifier = Modifier
+                .shadow(4.dp,Shapes().large, spotColor = MaterialTheme.colorScheme.darkText)
                 .weight(.7f)
                 .height(30.dp)
                 .clickable { onCardClicked() },
             shape = Shapes().large,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.mainBackground),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.searchBackground),
+//            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
@@ -61,14 +65,14 @@ fun SearchSection(onCardClicked:()->Unit) {
                         .padding(vertical = 6.dp)
                         .padding(horizontal = 8.dp)
                         .size(18.dp),
-                    tint = MaterialTheme.colorScheme.darkText
+                    tint = MaterialTheme.colorScheme.softgray
                 )
 
                 Text(
                     text = stringResource(R.string.search),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black.copy(0.5f)
+                    color = MaterialTheme.colorScheme.softgray
                 )
 
             }

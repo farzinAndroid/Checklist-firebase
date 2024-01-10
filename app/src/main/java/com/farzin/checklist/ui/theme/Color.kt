@@ -32,4 +32,13 @@ val ColorScheme.gray: Color
 
 val ColorScheme.softgray: Color
     @Composable
-    get() = Color(0xFFf2eded)
+    get() = Color(0xFFA2A0A0)
+
+
+val ColorScheme.blue: Color
+    @Composable
+    get() = Color(0xFF0384DA)
+
+val ColorScheme.searchBackground: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) Color(0xFF000F25) else Color(0xFFffffff)

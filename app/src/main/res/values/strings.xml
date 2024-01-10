@@ -7,4 +7,6 @@
     <string name="today">امروز</string>
     <string name="my_tasks">وظایف من</string>
     <string name="search">جست‌وجو</string>
+    <string name="tasks">وظایف</string>
+    <string name="create_task">اضافه کردن وظیفه</string>
 </resources>

@@ -112,4 +112,7 @@ dependencies {
     // persian calendar
     implementation ("com.github.samanzamani:PersianDate:1.7.1")
 //    implementation("ir.huri:jalalicalendar:2.0.0")
+
+    // circular progress bar
+    implementation ("com.github.hitanshu-dhawan:CircularProgressBar-Compose:1.0.0-rc01")
 }

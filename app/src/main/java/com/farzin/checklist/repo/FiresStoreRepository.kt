@@ -1,11 +1,15 @@
 package com.farzin.checklist.repo
 
+import android.util.Log
 import com.farzin.checklist.model.NetworkResult
 import com.farzin.checklist.model.Subtask
 import com.farzin.checklist.model.Task
 import com.farzin.checklist.utils.Constants.COLLECTION_ID
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +17,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class FiresStoreRepository @Inject constructor(private val fireStore: FirebaseFirestore) {
+class FiresStoreRepository @Inject constructor(
+    private val fireStore: FirebaseFirestore,
+    private val firebase:FirebaseAuth
+) {
 
 
     fun getUserTasks(): Flow<List<Task>> = callbackFlow {
@@ -22,11 +29,13 @@ class FiresStoreRepository @Inject constructor(private val fireStore: FirebaseFi
         try {
             snapShotListener = fireStore
                 .collection(COLLECTION_ID)
+                .whereEqualTo("userId",firebase.currentUser?.uid)
                 .addSnapshotListener { snapShot, error ->
                     val response = if (snapShot != null){
                         val tasks = snapShot.toObjects(Task::class.java)
                         NetworkResult.Success("success",tasks)
                     }else{
+                        Log.e("TAG",error?.message.toString())
                         NetworkResult.Error(error?.message.toString())
                     }
 
