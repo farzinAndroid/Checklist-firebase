@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.farzin.checklist.R
-import com.farzin.checklist.ui.theme.blue
+import com.farzin.checklist.ui.theme.blueWithoutDarkTheme
 
 @Composable
 fun AddButton(
     modifier: Modifier = Modifier,
-    backGroundColor: Color = MaterialTheme.colorScheme.blue,
+    backGroundColor: Color = MaterialTheme.colorScheme.blueWithoutDarkTheme,
     text: String = stringResource(R.string.create_task),
     style: TextStyle = MaterialTheme.typography.titleLarge,
     elevation: Dp = 4.dp,

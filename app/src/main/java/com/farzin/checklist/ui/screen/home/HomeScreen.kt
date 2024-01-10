@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.farzin.checklist.model.Subtask
 import com.farzin.checklist.model.Task
+import com.farzin.checklist.navGraph.Screens
 import com.farzin.checklist.ui.components.AddButton
 import com.farzin.checklist.ui.components.MyDividerHorizontal
 import com.farzin.checklist.ui.theme.mainBackground
@@ -94,7 +95,12 @@ fun Home(
 
             LazyColumn(modifier = Modifier.fillMaxSize()){
                 items(tasks){
-                    TaskItem(it)
+                    TaskItem(
+                       task =  it,
+                        onCardClicked = {
+                            navController.navigate(Screens.AddUpdateScreen.route + "?taskId=${it.taskId}")
+                        }
+                    )
                 }
             }
 
@@ -106,7 +112,9 @@ fun Home(
                 .padding(bottom = 30.dp)
                 .height(40.dp)
                 .width(200.dp),
-            onClick = {}
+            onClick = {
+                navController.navigate(Screens.AddUpdateScreen.route)
+            }
         )
 
     }

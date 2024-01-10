@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Shapes
@@ -48,28 +49,35 @@ import com.farzin.checklist.ui.theme.softgray
 import com.farzin.checklist.ui.theme.veryExtraSmall
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskItem(task: Task) {
+fun TaskItem(
+    task: Task,
+    onCardClicked: () -> Unit,
+) {
 
 
     var progress by remember {
         mutableFloatStateOf(0.5f)
     }
 
-    val progress2 by animateFloatAsState(progress*100f, label = "")
+    val progress2 by animateFloatAsState(progress * 100f, label = "")
 
 
-    val color = when(task.priority){
-        1->{
+    val color = when (task.priority) {
+        1 -> {
             Color.Red
         }
-        2->{
+
+        2 -> {
             Color.Black
         }
-        3->{
+
+        3 -> {
             Color.Green
         }
-        else->{
+
+        else -> {
             Color.Gray
         }
     }
@@ -82,9 +90,14 @@ fun TaskItem(task: Task) {
             .fillMaxWidth()
             .height(90.dp)
             .padding(horizontal = 16.dp)
-            .shadow(6.dp, shape = Shapes().extraLarge, spotColor = MaterialTheme.colorScheme.darkText),
+            .shadow(
+                6.dp,
+                shape = Shapes().extraLarge,
+                spotColor = MaterialTheme.colorScheme.darkText
+            ),
         shape = Shapes().extraLarge,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.mainBackground),
+        onClick = { onCardClicked() }
     ) {
 
         Row(
@@ -161,7 +174,6 @@ fun TaskItem(task: Task) {
                     )
 
                 }
-
 
 
             }

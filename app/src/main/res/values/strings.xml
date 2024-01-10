@@ -9,4 +9,8 @@
     <string name="search">جست‌وجو</string>
     <string name="tasks">وظایف</string>
     <string name="create_task">اضافه کردن وظیفه</string>
+    <string name="edit_task">ویرایش وظیفه</string>
+    <string name="task_title">عنوان وظیفه</string>
+    <string name="due_date">تاریخ اتمام</string>
+    <string name="due_time">زمان اتمام</string>
 </resources>
