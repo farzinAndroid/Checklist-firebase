@@ -47,3 +47,15 @@ val ColorScheme.blueWithDarkTheme: Color
 val ColorScheme.searchBackground: Color
     @Composable
     get() = if (isSystemInDarkTheme()) Color(0xFF000F25) else Color(0xFFffffff)
+
+val ColorScheme.highPriority: Color
+    @Composable
+    get() =  Color(0xFFD10000)
+
+val ColorScheme.mediumPriority: Color
+    @Composable
+    get() =  Color(0xFFF1C900)
+
+val ColorScheme.lowPriority: Color
+    @Composable
+    get() =  Color(0xFF07AC01)

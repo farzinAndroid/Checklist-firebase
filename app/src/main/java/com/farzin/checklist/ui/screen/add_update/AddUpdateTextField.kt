@@ -24,38 +24,63 @@ import com.farzin.checklist.ui.theme.darkText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddUpdateTextField(
-    textValue:String,
-    onTextValueChanged:(String)->Unit,
-    isHaveIcon:Boolean
+    textValue: String,
+    onTextValueChanged: (String) -> Unit,
+    isHaveIcon: Boolean,
 ) {
 
 
-    OutlinedTextField(
-        value = textValue,
-        onValueChange = onTextValueChanged,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            cursorColor = MaterialTheme.colorScheme.darkText,
-            focusedLeadingIconColor = MaterialTheme.colorScheme.blueWithDarkTheme,
-            unfocusedLeadingIconColor =  MaterialTheme.colorScheme.blueWithDarkTheme,
-            unfocusedBorderColor = MaterialTheme.colorScheme.blueWithDarkTheme,
-            focusedBorderColor = MaterialTheme.colorScheme.blueWithoutDarkTheme,
-        ),
-        shape = Shapes().large,
-        leadingIcon = {
-            if (isHaveIcon){
+    if (isHaveIcon) {
+        OutlinedTextField(
+            value = textValue,
+            onValueChange = onTextValueChanged,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                cursorColor = MaterialTheme.colorScheme.darkText,
+                focusedLeadingIconColor = MaterialTheme.colorScheme.blueWithDarkTheme,
+                unfocusedLeadingIconColor = MaterialTheme.colorScheme.blueWithDarkTheme,
+                unfocusedBorderColor = MaterialTheme.colorScheme.blueWithDarkTheme,
+                focusedBorderColor = MaterialTheme.colorScheme.blueWithoutDarkTheme,
+            ),
+            shape = Shapes().large,
+            leadingIcon = {
                 Icon(
                     imageVector = Icons.Sharp.CheckCircle,
                     contentDescription = "",
                     modifier = Modifier
                         .size(26.dp)
                 )
-            }
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
-        textStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp, shadow = Shadow(MaterialTheme.colorScheme.darkText, blurRadius = 1f)),
-    )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            textStyle = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 15.sp,
+                shadow = Shadow(MaterialTheme.colorScheme.darkText, blurRadius = 1f)
+            ),
+        )
+    }else{
+        OutlinedTextField(
+            value = textValue,
+            onValueChange = onTextValueChanged,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                cursorColor = MaterialTheme.colorScheme.darkText,
+                focusedLeadingIconColor = MaterialTheme.colorScheme.blueWithDarkTheme,
+                unfocusedLeadingIconColor = MaterialTheme.colorScheme.blueWithDarkTheme,
+                unfocusedBorderColor = MaterialTheme.colorScheme.blueWithDarkTheme,
+                focusedBorderColor = MaterialTheme.colorScheme.blueWithoutDarkTheme,
+            ),
+            shape = Shapes().large,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            textStyle = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 15.sp,
+                shadow = Shadow(MaterialTheme.colorScheme.darkText, blurRadius = 1f)
+            ),
+        )
+    }
 
 
 }

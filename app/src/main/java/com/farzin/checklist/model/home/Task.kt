@@ -1,4 +1,4 @@
-package com.farzin.checklist.model
+package com.farzin.checklist.model.home
 
 data class Task(
     val taskId:String = "",

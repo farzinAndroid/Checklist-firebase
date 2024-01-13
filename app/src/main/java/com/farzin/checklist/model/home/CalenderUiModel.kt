@@ -1,4 +1,4 @@
-package com.farzin.checklist.model
+package com.farzin.checklist.model.home
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

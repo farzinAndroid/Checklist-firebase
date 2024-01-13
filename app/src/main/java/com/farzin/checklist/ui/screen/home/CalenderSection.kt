@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.farzin.checklist.R
 import com.farzin.checklist.data.CalendarDataSource
-import com.farzin.checklist.model.CalendarUiModel
+import com.farzin.checklist.model.home.CalendarUiModel
 import com.farzin.checklist.ui.theme.darkText
 import com.farzin.checklist.utils.DateHelper
 import com.farzin.checklist.utils.DigitHelper

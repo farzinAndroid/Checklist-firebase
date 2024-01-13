@@ -1,6 +1,6 @@
 package com.farzin.checklist.data
 
-import com.farzin.checklist.model.CalendarUiModel
+import com.farzin.checklist.model.home.CalendarUiModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit

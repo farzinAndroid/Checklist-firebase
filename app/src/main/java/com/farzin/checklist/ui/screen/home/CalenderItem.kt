@@ -1,6 +1,5 @@
 package com.farzin.checklist.ui.screen.home
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -14,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.farzin.checklist.model.CalendarUiModel
+import com.farzin.checklist.model.home.CalendarUiModel
 import com.farzin.checklist.ui.components.MySpacerHeight
 import com.farzin.checklist.utils.DateHelper
 import com.farzin.checklist.utils.DigitHelper

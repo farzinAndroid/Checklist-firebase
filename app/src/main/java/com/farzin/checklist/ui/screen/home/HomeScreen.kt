@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.farzin.checklist.model.Subtask
-import com.farzin.checklist.model.Task
+import com.farzin.checklist.model.home.Subtask
+import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.navGraph.Screens
 import com.farzin.checklist.ui.components.AddButton
 import com.farzin.checklist.ui.components.MyDividerHorizontal

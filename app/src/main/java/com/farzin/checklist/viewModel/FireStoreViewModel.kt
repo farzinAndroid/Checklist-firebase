@@ -5,13 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.farzin.checklist.model.NetworkResult
-import com.farzin.checklist.model.Subtask
-import com.farzin.checklist.model.Task
+import com.farzin.checklist.model.home.Subtask
 import com.farzin.checklist.repo.FiresStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

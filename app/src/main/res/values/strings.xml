@@ -13,4 +13,8 @@
     <string name="task_title">عنوان وظیفه</string>
     <string name="due_date">تاریخ اتمام</string>
     <string name="due_time">زمان اتمام</string>
+    <string name="set_priority">اولویت</string>
+    <string name="low">پایین</string>
+    <string name="high">بالا</string>
+    <string name="meduim">معمولی</string>
 </resources>
