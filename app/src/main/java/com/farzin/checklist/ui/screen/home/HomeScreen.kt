@@ -28,7 +28,7 @@ import com.farzin.checklist.ui.components.AddButton
 import com.farzin.checklist.ui.components.MyDividerHorizontal
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.viewModel.AuthenticationViewModel
-import com.farzin.checklist.viewModel.FireStoreViewModel
+import com.farzin.checklist.viewModel.TaskViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.collectLatest
@@ -38,30 +38,30 @@ import kotlinx.coroutines.flow.collectLatest
 fun HomeScreen(
     navController: NavController,
     authenticationViewModel: AuthenticationViewModel = hiltViewModel(),
-    fireStoreViewModel: FireStoreViewModel = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
 ) {
 
-    Home(authenticationViewModel,fireStoreViewModel, navController,)
+    Home(authenticationViewModel,taskViewModel, navController,)
 }
 
 @Composable
 fun Home(
     authenticationViewModel: AuthenticationViewModel,
-    fireStoreViewModel: FireStoreViewModel,
+    taskViewModel: TaskViewModel,
     navController: NavController
 ) {
 
 
     val subtaskList = listOf<Subtask>(
-           Subtask(subtaskId = 1,title = "sub 1",isSubtaskCompleted = false),
-           Subtask(subtaskId = 2,title = "sub 2",isSubtaskCompleted = false),
-           Subtask(subtaskId = 3,title = "sub 3",isSubtaskCompleted = false),
+           Subtask(subtaskId = 1,title = "یک",isSubtaskCompleted = false),
+           Subtask(subtaskId = 2,title = "دو",isSubtaskCompleted = false),
+           Subtask(subtaskId = 3,title = "سه",isSubtaskCompleted = false),
        )
 
     var tasks by remember { mutableStateOf<List<Task>>(emptyList()) }
 
     LaunchedEffect(true){
-        fireStoreViewModel.tasks.collectLatest {result->
+        taskViewModel.tasks.collectLatest { result->
             tasks = result
         }
     }
@@ -79,7 +79,7 @@ fun Home(
 
             TopBarSection(
                 onCardClicked = {
-                    fireStoreViewModel.addTask(
+                    /*taskViewModel.addTask(
                         userId = Firebase.auth.uid!!,
                         subTasks = subtaskList,
                         isTaskCompleted = false,
@@ -88,7 +88,7 @@ fun Home(
                         priority = 3,
                         title = "وظیفه تست",
                         description = "این تست است"
-                    )
+                    )*/
                 }
             )
             MyDividerHorizontal()

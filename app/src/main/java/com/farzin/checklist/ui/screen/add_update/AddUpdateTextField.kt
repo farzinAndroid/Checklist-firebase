@@ -55,7 +55,7 @@ fun AddUpdateTextField(
                 .height(50.dp),
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
+                fontSize = 14.sp,
                 shadow = Shadow(MaterialTheme.colorScheme.darkText, blurRadius = 1f)
             ),
         )

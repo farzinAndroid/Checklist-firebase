@@ -1,14 +1,11 @@
 package com.farzin.checklist.ui.screen.add_update
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -20,13 +17,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.farzin.checklist.R
 import com.farzin.checklist.model.add_update.PriorityModel
+import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.ui.components.MySpacerHeight
 import com.farzin.checklist.ui.theme.darkText
 import com.farzin.checklist.ui.theme.highPriority
@@ -34,7 +31,7 @@ import com.farzin.checklist.ui.theme.lowPriority
 import com.farzin.checklist.ui.theme.mediumPriority
 
 @Composable
-fun PrioritySection() {
+fun PrioritySection(priorityNumber: Int = -1) {
 
 
     val priorityList = listOf(
@@ -60,6 +57,11 @@ fun PrioritySection() {
 
 
     var selectedPriority by remember { mutableStateOf<PriorityModel?>(null) }
+    if (priorityNumber != -1) {
+        selectedPriority = priorityList.find { priorityNumber == it.number }
+    }
+
+    MySpacerHeight(height = 10.dp)
 
     Column(
         modifier = Modifier
@@ -68,19 +70,15 @@ fun PrioritySection() {
         horizontalAlignment = Alignment.Start
     ) {
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
 
-            Text(
-                text = stringResource(R.string.set_priority),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.darkText,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
+        Text(
+            text = stringResource(R.string.set_priority),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.darkText,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
 
-
-
-        }
 
         MySpacerHeight(height = 8.dp)
 
@@ -96,6 +94,7 @@ fun PrioritySection() {
                     priority = priority,
                     onClick = {
                         selectedPriority = priority
+                        Log.e("TAG",selectedPriority?.text.toString())
                     },
                     isSelected = priority == selectedPriority
                 )

@@ -5,7 +5,7 @@ data class Task(
     val userId:String = "",
     val title:String = "",
     val description:String = "",
-    val priority:Int = 1,
+    val priority:Int = -1,
     val dueDate:String = "",
     val dueTime:String = "",
     val subTask:List<Subtask>,
@@ -17,7 +17,7 @@ data class Task(
 
 data class Subtask(
     val subtaskId:Int = 0,
-    val title: String = "",
+    var title: String = "",
     val isSubtaskCompleted:Boolean = false,
 )
 
