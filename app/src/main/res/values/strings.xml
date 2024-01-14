@@ -18,4 +18,5 @@
     <string name="high">بالا</string>
     <string name="meduim">معمولی</string>
     <string name="sub_task">زیر وظیفه</string>
+    <string name="add_sub_task">اضافه کردن وظیفه</string>
 </resources>

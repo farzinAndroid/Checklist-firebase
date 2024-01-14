@@ -110,9 +110,17 @@ dependencies {
     implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
 
     // persian calendar
-    implementation ("com.github.samanzamani:PersianDate:1.7.1")
+//    implementation ("com.github.samanzamani:PersianDate:1.7.1")
 //    implementation("ir.huri:jalalicalendar:2.0.0")
+    implementation ("com.github.hasin-neobank:android-persian-picker:1.2.4")
+    implementation ("com.github.aliab:Persian-Date-Picker-Dialog:1.8.0")
 
     // circular progress bar
     implementation ("com.github.hitanshu-dhawan:CircularProgressBar-Compose:1.0.0-rc01")
+
+    // time picker
+//    implementation ("com.github.commandiron:WheelPickerCompose:1.1.11")
+//    implementation("com.marosseleng.android:compose-material3-datetime-pickers:0.7.2")
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.2.1")
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:1.2.1")
 }

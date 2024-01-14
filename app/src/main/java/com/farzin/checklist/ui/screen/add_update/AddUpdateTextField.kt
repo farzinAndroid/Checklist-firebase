@@ -1,5 +1,6 @@
 package com.farzin.checklist.ui.screen.add_update
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -14,6 +15,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,11 +28,12 @@ import com.farzin.checklist.ui.theme.darkText
 fun AddUpdateTextField(
     textValue: String,
     onTextValueChanged: (String) -> Unit,
-    isHaveIcon: Boolean,
+    icon:Painter? = null,
+    onClick:()->Unit
 ) {
 
 
-    if (isHaveIcon) {
+    if (icon != null) {
         OutlinedTextField(
             value = textValue,
             onValueChange = onTextValueChanged,
@@ -44,15 +47,17 @@ fun AddUpdateTextField(
             shape = Shapes().large,
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Sharp.CheckCircle,
+                    painter = icon,
                     contentDescription = "",
                     modifier = Modifier
-                        .size(26.dp)
+                        .size(22.dp)
+                        .clickable { onClick() }
                 )
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(52.dp)
+                .clickable { onClick() },
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
@@ -73,7 +78,8 @@ fun AddUpdateTextField(
             shape = Shapes().large,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(52.dp)
+                .clickable { onClick() },
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp,

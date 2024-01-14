@@ -5,7 +5,11 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -26,6 +30,8 @@ import androidx.compose.ui.unit.sp
 import com.farzin.checklist.R
 import com.farzin.checklist.model.home.Subtask
 import com.farzin.checklist.ui.components.MySpacerHeight
+import com.farzin.checklist.ui.theme.blueWithDarkTheme
+import com.farzin.checklist.ui.theme.blueWithoutDarkTheme
 import com.farzin.checklist.ui.theme.darkText
 
 @SuppressLint("MutableCollectionMutableState")
@@ -34,7 +40,9 @@ fun SubTaskSection(subtask: List<Subtask> = emptyList()) {
 
     var subtasks by remember { mutableStateOf(subtask.toMutableList()) }
 
-    var nextSubtaskId by remember { mutableIntStateOf((subtasks.maxOfOrNull { it.subtaskId } ?: 0) + 1) }
+    var nextSubtaskId by remember {
+        mutableIntStateOf((subtasks.maxOfOrNull { it.subtaskId } ?: 0) + 1)
+    }
 
     // Only update the state if the parent list has changed
     LaunchedEffect(subtask) {
@@ -68,37 +76,51 @@ fun SubTaskSection(subtask: List<Subtask> = emptyList()) {
 
 
         // Render existing text fields
-            subtasks.forEachIndexed { index, subtask ->
-                var updatedTitle by remember { mutableStateOf(subtask.title) }
-                AddUpdateTextField(
-                    textValue = updatedTitle,
-                    onTextValueChanged = { newTitle ->
-                        updatedTitle = newTitle
-                        subtasks[index] = subtask.copy(title = newTitle)
-                    },
-                    isHaveIcon = false
-                )
+        subtasks.forEachIndexed { index, subtask ->
+            var updatedTitle by remember { mutableStateOf(subtask.title) }
+            var isSubtaskCompleted by remember { mutableStateOf(subtask.isSubtaskCompleted) }
 
-            }
+            SubTaskTextField(
+                textValue = updatedTitle,
+                onValueChanged = { newTitle ->
+                    updatedTitle = newTitle
+                    subtasks[index] = subtask.copy(title = newTitle)
+                },
+                isCompleted = isSubtaskCompleted,
+                onCheckedChange = {
+                    isSubtaskCompleted = !it
+                    subtasks[index] = subtask.copy(isSubtaskCompleted = isSubtaskCompleted)
+                }
+            )
+        }
 
+
+        MySpacerHeight(height = 16.dp)
 
         // Button to add another text field
-        Button(
-            onClick = {
-                subtasks =
-                    (subtasks.toMutableList() + Subtask(subtaskId = nextSubtaskId++)).toMutableList() // Add a new empty subtask
-            }
+
+        Button(onClick = {
+            subtasks =
+                (subtasks.toMutableList() + Subtask(subtaskId = nextSubtaskId++))
+                    .toMutableList() // Add a new empty subtask
+        },
+            modifier = Modifier
+                .wrapContentHeight()
+                .wrapContentWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.blueWithoutDarkTheme),
         ) {
-            Text(text = "add sub-task")
+           Text(
+               text = stringResource(R.string.add_sub_task),
+               style = MaterialTheme.typography.titleLarge,
+               color = MaterialTheme.colorScheme.darkText,
+               fontWeight = FontWeight.ExtraBold,
+               fontSize = 14.sp
+           )
         }
 
-        Button(
-            onClick = {
-                Log.e("TAG",subtasks.toString())
-            }
-        ) {
+        /*Button(onClick = { Log.e("TAG",subtasks.toString()) }) {
             Text(text = "show")
-        }
+        }*/
 
 
     }

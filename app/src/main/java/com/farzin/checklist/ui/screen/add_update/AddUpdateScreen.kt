@@ -4,16 +4,20 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,8 +28,11 @@ import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.ui.components.MySpacerHeight
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.viewModel.TaskViewModel
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddUpdateScreen(
     taskId: String,
@@ -33,12 +40,15 @@ fun AddUpdateScreen(
     taskViewModel: TaskViewModel = hiltViewModel(),
 ) {
 
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     var singleTask by remember { mutableStateOf(Task()) }
-    if (taskId.isNotEmpty()){
-        LaunchedEffect(taskId){
+    if (taskId.isNotEmpty()) {
+        LaunchedEffect(taskId) {
             taskViewModel.getSingleTask(taskId)
 
-            taskViewModel.singleTask.collectLatest {result->
+            taskViewModel.singleTask.collectLatest { result ->
                 singleTask = result
             }
         }
@@ -69,6 +79,18 @@ fun AddUpdateScreen(
         subTasks = it.subTask
     }
 
+    var showTimepicker by remember { mutableStateOf(false) }
+    val clockState = rememberUseCaseState()
+
+
+        TimePickerComposable(
+            onTimePicked = { hour, minute, second ->
+                taskDueTimeText = "$hour:$minute:$second"
+            },
+            clockState = clockState
+        )
+
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -86,29 +108,33 @@ fun AddUpdateScreen(
                     taskTitleText = it
                 },
                 title = stringResource(R.string.task_title),
-                isHaveIcon = false
+                onClick = {}
             )
         }
 
         item {
             TaskTitleSection(
                 textValue = taskDueDateText,
-                onTextValueChanged = {
-
-                },
+                onTextValueChanged = {},
                 title = stringResource(R.string.due_date),
-                isHaveIcon = true
+                icon = painterResource(R.drawable.calendar),
+                onClick = {
+                    datePicker(context) {
+                        taskDueDateText = it
+                    }
+                }
             )
         }
 
         item {
             TaskTitleSection(
                 textValue = taskDueTimeText,
-                onTextValueChanged = {
-
-                },
+                onTextValueChanged = {},
                 title = stringResource(R.string.due_time),
-                isHaveIcon = true
+                icon = painterResource(R.drawable.clock),
+                onClick = {
+                    clockState.show()
+                }
             )
         }
 
@@ -118,7 +144,7 @@ fun AddUpdateScreen(
 
 
         item { SubTaskSection(subtask = if (taskId.isNotEmpty()) subTasks else emptyList()) }
-
+        item { Text(text = taskDueTimeText) }
 
     }
 

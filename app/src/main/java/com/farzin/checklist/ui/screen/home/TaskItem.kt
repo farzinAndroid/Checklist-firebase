@@ -39,7 +39,10 @@ import com.farzin.checklist.R
 import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.ui.components.MySpacerWidth
 import com.farzin.checklist.ui.theme.darkText
+import com.farzin.checklist.ui.theme.highPriority
+import com.farzin.checklist.ui.theme.lowPriority
 import com.farzin.checklist.ui.theme.mainBackground
+import com.farzin.checklist.ui.theme.mediumPriority
 import com.farzin.checklist.ui.theme.softgray
 import com.farzin.checklist.ui.theme.veryExtraSmall
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
@@ -61,15 +64,15 @@ fun TaskItem(
 
     val color = when (task.priority) {
         1 -> {
-            Color.Red
+            MaterialTheme.colorScheme.highPriority
         }
 
         2 -> {
-            Color.Black
+            MaterialTheme.colorScheme.mediumPriority
         }
 
         3 -> {
-            Color.Green
+            MaterialTheme.colorScheme.lowPriority
         }
 
         else -> {

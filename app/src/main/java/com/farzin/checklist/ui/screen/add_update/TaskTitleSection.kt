@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,7 +22,8 @@ fun TaskTitleSection(
     title:String,
     textValue:String,
     onTextValueChanged:(String)->Unit,
-    isHaveIcon:Boolean
+    icon: Painter? = null,
+    onClick:()->Unit
 ) {
 
     Column(
@@ -41,7 +43,7 @@ fun TaskTitleSection(
         
         MySpacerHeight(height = 8.dp)
 
-        AddUpdateTextField(textValue, onTextValueChanged,isHaveIcon)
+        AddUpdateTextField(textValue, onTextValueChanged,icon,onClick)
 
     }
 
