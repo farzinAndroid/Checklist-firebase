@@ -108,7 +108,7 @@ class FiresStoreRepository @Inject constructor(
         onError: (String) -> Unit,
     ) {
 
-        val updateData = hashMapOf<String, Any>(
+        val updateData = hashMapOf(
             "userId" to task.userId,
             "title" to task.title,
             "description" to task.description,
@@ -130,6 +130,26 @@ class FiresStoreRepository @Inject constructor(
                 }
 
 
+
+    }
+
+
+    fun deleteTask(
+        task:Task,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit,
+    ) {
+
+        fireStore
+            .collection(COLLECTION_ID)
+            .document(task.taskId)
+            .delete()
+            .addOnSuccessListener {result->
+                onSuccess("deletedSuccessfully")
+            }
+            .addOnFailureListener {result->
+                onError(result.message!!)
+            }
 
     }
 

@@ -1,35 +1,54 @@
 package com.farzin.checklist.ui.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.farzin.checklist.model.home.Subtask
 import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.navGraph.Screens
 import com.farzin.checklist.ui.components.AddButton
 import com.farzin.checklist.ui.components.MyDividerHorizontal
+import com.farzin.checklist.ui.theme.darkText
+import com.farzin.checklist.ui.theme.highPriority
+import com.farzin.checklist.ui.theme.lowPriority
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.viewModel.AuthenticationViewModel
 import com.farzin.checklist.viewModel.TaskViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -42,6 +61,7 @@ fun HomeScreen(
     Home(authenticationViewModel, taskViewModel, navController)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
     authenticationViewModel: AuthenticationViewModel,
@@ -50,6 +70,8 @@ fun Home(
 ) {
 
     var tasks by remember { mutableStateOf<List<Task>>(emptyList()) }
+
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
         taskViewModel.tasks.collectLatest { result ->
@@ -70,30 +92,96 @@ fun Home(
 
             TopBarSection(
                 onCardClicked = {
-                    /*taskViewModel.addTask(
-                        userId = Firebase.auth.uid!!,
-                        subTasks = subtaskList,
-                        isTaskCompleted = false,
-                        dueTime = "14:15:30",
-                        dueDate = "19/10/1402",
-                        priority = 3,
-                        title = "وظیفه تست",
-                        description = "این تست است"
-                    )*/
+
                 }
             )
             MyDividerHorizontal()
 
-            LazyColumn(modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 80.dp)) {
-                items(tasks) {
-                    TaskItem(
-                        task = it,
-                        onCardClicked = {
-                            navController.navigate(Screens.AddUpdateScreen.route + "?taskId=${it.taskId}")
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 80.dp),
+                state = rememberLazyListState(),
+            ) {
+                items(tasks, key = {it.taskId}) { task ->
+
+                    val swipeToDismissState = rememberDismissState(
+                        confirmValueChange = { it ->
+                            if (it == DismissValue.DismissedToStart) {
+                                Log.e("TAG", "update")
+                                val updatedTask = task.copy(subTask = task.subTask.map {
+                                    it.copy(subtaskCompleted = true)
+                                })
+                                taskViewModel.updateTask(updatedTask)
+                                return@rememberDismissState false // Prevent dismissal
+
+                            }
+
+                            if (it == DismissValue.DismissedToEnd) {
+                                Log.e("TAG", "delete")
+                                taskViewModel.deleteTask(task)
+                            }
+                            true
                         }
                     )
+
+                    SwipeToDismiss(
+                        state = swipeToDismissState,
+                        background = {
+                            val color = when (swipeToDismissState.dismissDirection) {
+                                DismissDirection.EndToStart -> {
+                                    MaterialTheme.colorScheme.lowPriority
+                                }
+
+                                DismissDirection.StartToEnd -> {
+                                    MaterialTheme.colorScheme.highPriority
+                                }
+
+                                else -> {
+                                    Color.Gray
+                                }
+                            }
+
+
+                            Box(
+                                modifier = Modifier
+                                    .padding(vertical = 18.dp)
+                                    .fillMaxWidth()
+                                    .height(90.dp)
+                                    .padding(horizontal = 16.dp)
+                                    .shadow(
+                                        6.dp,
+                                        shape = Shapes().extraLarge,
+                                        spotColor = MaterialTheme.colorScheme.darkText
+                                    )
+                                    .background(color),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .align(Alignment.CenterStart)
+                                )
+
+
+                                Icon(
+                                    imageVector = Icons.Filled.Edit,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .align(Alignment.CenterEnd)
+                                )
+                            }
+                        },
+                        dismissContent = {
+                            TaskItem(
+                                task = task,
+                                onCardClicked = {
+                                    navController.navigate(Screens.AddUpdateScreen.route + "?taskId=${task.taskId}")
+                                }
+                            )
+                        }
+                    )
+
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.farzin.checklist.viewModel
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -85,6 +86,7 @@ class TaskViewModel @Inject constructor(
 
     var updateTaskLoading by mutableStateOf(false)
     var updateTaskMessage by mutableStateOf("")
+    @SuppressLint("SuspiciousIndentation")
     fun updateTask(task:Task){
         updateTaskLoading = true
 
@@ -100,6 +102,23 @@ class TaskViewModel @Inject constructor(
                 }
             )
 
+    }
+
+
+    var deleteTaskLoading by mutableStateOf(false)
+    var deleteTaskMessage by mutableStateOf("")
+    fun deleteTask(task: Task){
+        repo.deleteTask(
+            task = task,
+            onSuccess = {
+                deleteTaskLoading = false
+                deleteTaskMessage = it
+            },
+            onError = {
+                deleteTaskLoading = false
+                deleteTaskMessage = it
+            }
+        )
     }
 
 

@@ -62,16 +62,13 @@ fun TaskItem(
         mutableFloatStateOf(0f)
     }
 
-    LaunchedEffect(true){
-        task.subTask.forEach { subtask ->
-            if (subtask.subtaskCompleted) {
-                progress += 1f
-            }
-        }
-
+    LaunchedEffect(task.subTask) {
+        val completedSubtasks = task.subTask.count { it.subtaskCompleted }
         val totalSubtasks = task.subTask.size
-        if (totalSubtasks > 0) {
-            progress = progress / totalSubtasks * 100f
+        progress = if (totalSubtasks > 0) {
+            completedSubtasks.toFloat() / totalSubtasks * 100f
+        } else {
+            0f
         }
     }
 
