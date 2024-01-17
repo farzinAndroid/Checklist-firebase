@@ -1,5 +1,6 @@
 package com.farzin.checklist.ui.screen.add_update
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import com.farzin.checklist.ui.components.MySpacerWidth
 import com.farzin.checklist.ui.theme.blueWithDarkTheme
 import com.farzin.checklist.ui.theme.blueWithoutDarkTheme
 import com.farzin.checklist.ui.theme.darkText
+import com.farzin.checklist.ui.theme.mainBackground
 
 @Composable
 fun AddUpdateTopBar(titleText:String,onClick:()->Unit) {
@@ -29,7 +31,8 @@ fun AddUpdateTopBar(titleText:String,onClick:()->Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp),
+            .height(80.dp)
+            .background(MaterialTheme.colorScheme.mainBackground),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

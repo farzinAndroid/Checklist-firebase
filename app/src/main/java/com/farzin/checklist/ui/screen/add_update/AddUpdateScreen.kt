@@ -1,6 +1,7 @@
 package com.farzin.checklist.ui.screen.add_update
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,7 +33,7 @@ import com.google.firebase.ktx.Firebase
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun AddUpdateScreen(
     taskId: String,
@@ -100,7 +101,7 @@ fun AddUpdateScreen(
             .background(MaterialTheme.colorScheme.mainBackground),
     ) {
 
-        item { AddUpdateTopBar(titleText = titleText, onClick = { navController.popBackStack() }) }
+        stickyHeader { AddUpdateTopBar(titleText = titleText, onClick = { navController.popBackStack() }) }
 
         item { MySpacerHeight(height = 12.dp) }
 

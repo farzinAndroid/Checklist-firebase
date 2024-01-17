@@ -39,20 +39,20 @@ fun HomeScreen(
     taskViewModel: TaskViewModel = hiltViewModel(),
 ) {
 
-    Home(authenticationViewModel,taskViewModel, navController,)
+    Home(authenticationViewModel, taskViewModel, navController)
 }
 
 @Composable
 fun Home(
     authenticationViewModel: AuthenticationViewModel,
     taskViewModel: TaskViewModel,
-    navController: NavController
+    navController: NavController,
 ) {
 
     var tasks by remember { mutableStateOf<List<Task>>(emptyList()) }
 
-    LaunchedEffect(true){
-        taskViewModel.tasks.collectLatest { result->
+    LaunchedEffect(true) {
+        taskViewModel.tasks.collectLatest { result ->
             tasks = result
         }
     }
@@ -61,12 +61,12 @@ fun Home(
         modifier = Modifier
             .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.mainBackground),
-        ){
+        ) {
 
             TopBarSection(
                 onCardClicked = {
@@ -84,10 +84,12 @@ fun Home(
             )
             MyDividerHorizontal()
 
-            LazyColumn(modifier = Modifier.fillMaxSize()){
-                items(tasks){
+            LazyColumn(modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 80.dp)) {
+                items(tasks) {
                     TaskItem(
-                       task =  it,
+                        task = it,
                         onCardClicked = {
                             navController.navigate(Screens.AddUpdateScreen.route + "?taskId=${it.taskId}")
                         }
@@ -109,8 +111,6 @@ fun Home(
         )
 
     }
-
-
 
 
 }

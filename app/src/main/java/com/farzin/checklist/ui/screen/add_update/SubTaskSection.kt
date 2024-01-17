@@ -86,8 +86,8 @@ fun SubTaskSection(subtask: List<Subtask> = emptyList(), subtaskCallback:(List<S
                 },
                 isCompleted = isSubtaskCompleted,
                 onCheckedChange = {
-                    isSubtaskCompleted = !it
-                    subtasks[index] = subtask.copy(subtaskCompleted = it)
+                    isSubtaskCompleted = !isSubtaskCompleted
+                    subtasks[index] = subtask.copy(subtaskCompleted = isSubtaskCompleted)
                     subtaskCallback(subtasks)
                 }
             )

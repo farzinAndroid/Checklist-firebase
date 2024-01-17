@@ -1,5 +1,6 @@
 package com.farzin.checklist.ui.screen.home
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +47,7 @@ import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.ui.theme.mediumPriority
 import com.farzin.checklist.ui.theme.softgray
 import com.farzin.checklist.ui.theme.veryExtraSmall
+import com.farzin.checklist.utils.DigitHelper
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,11 +59,24 @@ fun TaskItem(
 
 
     var progress by remember {
-        mutableFloatStateOf(0.5f)
+        mutableFloatStateOf(0f)
     }
 
-    val progress2 by animateFloatAsState(progress * 100f, label = "")
+    LaunchedEffect(true){
+        task.subTask.forEach { subtask ->
+            if (subtask.subtaskCompleted) {
+                progress += 1f
+            }
+        }
 
+        val totalSubtasks = task.subTask.size
+        if (totalSubtasks > 0) {
+            progress = progress / totalSubtasks * 100f
+        }
+    }
+
+
+    val progress2 by animateFloatAsState(progress, label = "")
 
     val color = when (task.priority) {
         1 -> {
@@ -134,7 +150,7 @@ fun TaskItem(
                     )
 
                     Text(
-                        text = "75%",
+                        text = "${DigitHelper.digitByLang(progress2.toInt().toString())}%",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.darkText,
                         fontWeight = FontWeight.Bold
@@ -165,7 +181,7 @@ fun TaskItem(
 
 
                     Text(
-                        text = "${task.subTask.size} ${stringResource(R.string.tasks)}",
+                        text = "${DigitHelper.digitByLang(task.subTask.size.toString())} ${stringResource(R.string.tasks)}",
                         style = MaterialTheme.typography.veryExtraSmall,
                         color = MaterialTheme.colorScheme.softgray,
                         fontWeight = FontWeight.Bold,
