@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,9 +27,10 @@ import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.ui.components.MySpacerHeight
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.viewModel.TaskViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +62,10 @@ fun AddUpdateScreen(
     singleTask.let {
         taskTitleText = it.title
     }
+    var taskDescriptionText by remember { mutableStateOf("") }
+    singleTask.let {
+        taskDescriptionText = it.description
+    }
     var taskDueTimeText by remember { mutableStateOf("") }
     singleTask.let {
         taskDueTimeText = it.dueTime
@@ -79,16 +83,15 @@ fun AddUpdateScreen(
         subTasks = it.subTask
     }
 
-    var showTimepicker by remember { mutableStateOf(false) }
+
     val clockState = rememberUseCaseState()
 
-
-        TimePickerComposable(
-            onTimePicked = { hour, minute, second ->
-                taskDueTimeText = "$hour:$minute:$second"
-            },
-            clockState = clockState
-        )
+    TimePickerComposable(
+        onTimePicked = { hour, minute, second ->
+            taskDueTimeText = "$hour:$minute:$second"
+        },
+        clockState = clockState
+    )
 
 
     LazyColumn(
@@ -139,12 +142,84 @@ fun AddUpdateScreen(
         }
 
         item {
-            PrioritySection(priorityNumber = if (taskId.isNotEmpty()) priorityNumber else -1)
+            PrioritySection(
+                priorityNumber = if (taskId.isNotEmpty()) priorityNumber else -1,
+                priorityCallback = {
+                    priorityNumber = it
+                }
+            )
         }
 
 
-        item { SubTaskSection(subtask = if (taskId.isNotEmpty()) subTasks else emptyList()) }
-        item { Text(text = taskDueTimeText) }
+        item {
+            SubTaskSection(
+                subtask = if (taskId.isNotEmpty()) subTasks else emptyList(),
+                subtaskCallback = {
+                    subTasks = it
+                    Log.e("TAG", subTasks.toString())
+                }
+            )
+        }
+
+        item {
+            DescriptionSection(
+                textValue = taskDescriptionText,
+                onTextValueChanged = {
+                    taskDescriptionText = it
+                },
+                icon = null,
+                title = stringResource(R.string.description),
+                onClick = {}
+            )
+        }
+
+        if (taskId.isEmpty()) {
+            item {
+                AddTaskButtonSection(
+                    onAddClicked = {
+                        taskViewModel.addTask(
+                            userId = Firebase.auth.currentUser?.uid!!,
+                            dueTime = taskDueTimeText,
+                            dueDate = taskDueDateText,
+                            description = taskDescriptionText,
+                            title = taskTitleText,
+                            priority = priorityNumber,
+                            subTasks = subTasks
+                        )
+                    },
+                    onClearClicked = {
+
+                    }
+                )
+            }
+        } else {
+            item {
+                UpdateTaskButtonSection(
+                    onEditClicked = {
+
+                        val updatedTask = Task(
+                            taskId = taskId,
+                            priority = priorityNumber,
+                            title = taskTitleText,
+                            description = taskDescriptionText,
+                            userId = Firebase.auth.currentUser?.uid!!,
+                            dueDate = taskDueDateText,
+                            dueTime = taskDueTimeText,
+                            subTask = subTasks,
+                        )
+
+                        taskViewModel.updateTask(
+                            task = updatedTask
+                        )
+
+                    },
+                    onClearClicked = {
+
+                    }
+                )
+            }
+        }
+
 
     }
 

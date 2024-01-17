@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class FiresStoreRepository @Inject constructor(
     private val fireStore: FirebaseFirestore,
-    private val firebase:FirebaseAuth
+    private val firebase: FirebaseAuth,
 ) {
 
 
@@ -27,19 +27,19 @@ class FiresStoreRepository @Inject constructor(
         try {
             snapShotListener = fireStore
                 .collection(COLLECTION_ID)
-                .whereEqualTo("userId",firebase.currentUser?.uid)
+                .whereEqualTo("userId", firebase.currentUser?.uid)
                 .addSnapshotListener { snapShot, error ->
-                    val response = if (snapShot != null){
+                    val response = if (snapShot != null) {
                         val tasks = snapShot.toObjects(Task::class.java)
-                        NetworkResult.Success("success",tasks)
-                    }else{
-                        Log.e("TAG",error?.message.toString())
+                        NetworkResult.Success("success", tasks)
+                    } else {
+                        Log.e("TAG", error?.message.toString())
                         NetworkResult.Error(error?.message.toString())
                     }
 
                     response.data?.let { trySend(it) }
                 }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -48,20 +48,20 @@ class FiresStoreRepository @Inject constructor(
     }
 
     fun getSingleTask(
-        taskId:String,
-        onError:(String)->Unit,
-        onSuccess:(Task)->Unit
-    ){
-            fireStore
-                .collection(COLLECTION_ID)
-                .document(taskId)
-                .get()
-                .addOnSuccessListener {response->
-                    response.toObject(Task::class.java)?.let { onSuccess(it) }
-                }
-                .addOnFailureListener {response->
-                    response.message?.let { onError(it) }
-                }
+        taskId: String,
+        onError: (String) -> Unit,
+        onSuccess: (Task) -> Unit,
+    ) {
+        fireStore
+            .collection(COLLECTION_ID)
+            .document(taskId)
+            .get()
+            .addOnSuccessListener { response ->
+                response.toObject(Task::class.java)?.let { onSuccess(it) }
+            }
+            .addOnFailureListener { response ->
+                response.message?.let { onError(it) }
+            }
     }
 
     suspend fun addTask(
@@ -72,9 +72,8 @@ class FiresStoreRepository @Inject constructor(
         dueDate: String,
         dueTime: String,
         subTasks: List<Subtask>,
-        isTaskCompleted: Boolean,
         onSuccess: (String) -> Unit,
-        onError: (String) -> Unit
+        onError: (String) -> Unit,
     ) {
         val taskId = fireStore.collection(COLLECTION_ID).document().id
 
@@ -87,19 +86,51 @@ class FiresStoreRepository @Inject constructor(
             dueDate = dueDate,
             dueTime = dueTime,
             subTask = subTasks,
-            isTaskCompleted = isTaskCompleted
         )
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             fireStore.collection(COLLECTION_ID)
                 .document(taskId)
                 .set(task)
-                .addOnSuccessListener { response->
+                .addOnSuccessListener { response ->
                     onSuccess("added successfully")
                 }
-                .addOnFailureListener {response->
+                .addOnFailureListener { response ->
                     response.message?.let { onError(it) }
                 }
         }
     }
+
+
+    fun updateTask(
+        task: Task,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit,
+    ) {
+
+        val updateData = hashMapOf<String, Any>(
+            "userId" to task.userId,
+            "title" to task.title,
+            "description" to task.description,
+            "priority" to task.priority,
+            "dueDate" to task.dueDate,
+            "dueTime" to task.dueTime,
+            "subTask" to task.subTask,
+        )
+
+
+            fireStore.collection(COLLECTION_ID)
+                .document(task.taskId)
+                .update(updateData)
+                .addOnSuccessListener { result ->
+                    onSuccess("updated successfully")
+                }
+                .addOnFailureListener { result ->
+                    onError(result.message!!)
+                }
+
+
+
+    }
+
 }

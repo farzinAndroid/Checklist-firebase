@@ -5,19 +5,16 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,13 +27,12 @@ import androidx.compose.ui.unit.sp
 import com.farzin.checklist.R
 import com.farzin.checklist.model.home.Subtask
 import com.farzin.checklist.ui.components.MySpacerHeight
-import com.farzin.checklist.ui.theme.blueWithDarkTheme
 import com.farzin.checklist.ui.theme.blueWithoutDarkTheme
 import com.farzin.checklist.ui.theme.darkText
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun SubTaskSection(subtask: List<Subtask> = emptyList()) {
+fun SubTaskSection(subtask: List<Subtask> = emptyList(), subtaskCallback:(List<Subtask>)->Unit) {
 
     var subtasks by remember { mutableStateOf(subtask.toMutableList()) }
 
@@ -50,6 +46,7 @@ fun SubTaskSection(subtask: List<Subtask> = emptyList()) {
             subtasks.clear()
             subtasks.addAll(subtask)
             nextSubtaskId = (subtasks.maxOfOrNull { it.subtaskId } ?: 0) + 1
+            subtaskCallback(subtasks)
         }
     }
 
@@ -78,18 +75,20 @@ fun SubTaskSection(subtask: List<Subtask> = emptyList()) {
         // Render existing text fields
         subtasks.forEachIndexed { index, subtask ->
             var updatedTitle by remember { mutableStateOf(subtask.title) }
-            var isSubtaskCompleted by remember { mutableStateOf(subtask.isSubtaskCompleted) }
+            var isSubtaskCompleted by remember { mutableStateOf(subtask.subtaskCompleted) }
 
             SubTaskTextField(
                 textValue = updatedTitle,
                 onValueChanged = { newTitle ->
                     updatedTitle = newTitle
                     subtasks[index] = subtask.copy(title = newTitle)
+                    subtaskCallback(subtasks)
                 },
                 isCompleted = isSubtaskCompleted,
                 onCheckedChange = {
                     isSubtaskCompleted = !it
-                    subtasks[index] = subtask.copy(isSubtaskCompleted = isSubtaskCompleted)
+                    subtasks[index] = subtask.copy(subtaskCompleted = it)
+                    subtaskCallback(subtasks)
                 }
             )
         }
@@ -103,6 +102,7 @@ fun SubTaskSection(subtask: List<Subtask> = emptyList()) {
             subtasks =
                 (subtasks.toMutableList() + Subtask(subtaskId = nextSubtaskId++))
                     .toMutableList() // Add a new empty subtask
+            subtaskCallback(subtasks)
         },
             modifier = Modifier
                 .wrapContentHeight()

@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,8 +32,10 @@ import com.farzin.checklist.ui.theme.lowPriority
 import com.farzin.checklist.ui.theme.mediumPriority
 
 @Composable
-fun PrioritySection(priorityNumber: Int = -1) {
+fun PrioritySection(priorityNumber: Int = -1, priorityCallback: (Int) -> Unit) {
 
+
+    val context = LocalContext.current
 
     val priorityList = listOf(
 
@@ -94,7 +97,20 @@ fun PrioritySection(priorityNumber: Int = -1) {
                     priority = priority,
                     onClick = {
                         selectedPriority = priority
-                        Log.e("TAG",selectedPriority?.text.toString())
+
+                        when(selectedPriority?.text.toString()){
+                            context.getString(R.string.low)->{
+                                priorityCallback(3)
+                            }
+                            context.getString(R.string.meduim)->{
+                                priorityCallback(2)
+                            }
+                            context.getString(R.string.high)->{
+                                priorityCallback(1)
+                            }
+                        }
+
+
                     },
                     isSelected = priority == selectedPriority
                 )

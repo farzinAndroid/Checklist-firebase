@@ -29,8 +29,6 @@ import com.farzin.checklist.ui.components.MyDividerHorizontal
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.viewModel.AuthenticationViewModel
 import com.farzin.checklist.viewModel.TaskViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -50,13 +48,6 @@ fun Home(
     taskViewModel: TaskViewModel,
     navController: NavController
 ) {
-
-
-    val subtaskList = listOf<Subtask>(
-           Subtask(subtaskId = 1,title = "یک",isSubtaskCompleted = false),
-           Subtask(subtaskId = 2,title = "دو",isSubtaskCompleted = false),
-           Subtask(subtaskId = 3,title = "سه",isSubtaskCompleted = false),
-       )
 
     var tasks by remember { mutableStateOf<List<Task>>(emptyList()) }
 

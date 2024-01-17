@@ -36,7 +36,6 @@ class TaskViewModel @Inject constructor(
         dueDate: String,
         dueTime: String,
         subTasks: List<Subtask>,
-        isTaskCompleted: Boolean,
     ) {
 
         addTaskLoading = true
@@ -49,7 +48,6 @@ class TaskViewModel @Inject constructor(
                 dueDate = dueDate,
                 dueTime = dueTime,
                 subTasks = subTasks,
-                isTaskCompleted = isTaskCompleted,
                 onSuccess = {
                     addTaskLoading = false
                     addTaskMessage = it
@@ -82,6 +80,26 @@ class TaskViewModel @Inject constructor(
                 singleTaskMessage = response
             }
         )
+    }
+
+
+    var updateTaskLoading by mutableStateOf(false)
+    var updateTaskMessage by mutableStateOf("")
+    fun updateTask(task:Task){
+        updateTaskLoading = true
+
+            repo.updateTask(
+                task = task,
+                onSuccess = {
+                    updateTaskLoading = false
+                    updateTaskMessage = it
+                },
+                onError = {
+                    updateTaskLoading = false
+                    updateTaskMessage = it
+                }
+            )
+
     }
 
 

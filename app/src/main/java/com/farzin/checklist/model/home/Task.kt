@@ -9,16 +9,15 @@ data class Task(
     val dueDate:String = "",
     val dueTime:String = "",
     val subTask:List<Subtask>,
-    val isTaskCompleted:Boolean = false
 ){
     // Add a constructor with no arguments
-    constructor() : this("", "", "", "", 1, "", "", emptyList(),false)
+    constructor() : this("", "", "", "", 1, "", "", emptyList())
 }
 
 data class Subtask(
     val subtaskId:Int = 0,
     var title: String = "",
-    val isSubtaskCompleted:Boolean = false,
+    val subtaskCompleted:Boolean = false,
 )
 
 

@@ -19,4 +19,6 @@
     <string name="meduim">معمولی</string>
     <string name="sub_task">زیر وظیفه</string>
     <string name="add_sub_task">اضافه کردن وظیفه</string>
+    <string name="clear">پاک کردن</string>
+    <string name="description">توضیحات</string>
 </resources>

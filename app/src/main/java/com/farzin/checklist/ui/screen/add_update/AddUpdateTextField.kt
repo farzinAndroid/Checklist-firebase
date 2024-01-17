@@ -1,5 +1,6 @@
 package com.farzin.checklist.ui.screen.add_update
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,7 +30,9 @@ fun AddUpdateTextField(
     textValue: String,
     onTextValueChanged: (String) -> Unit,
     icon:Painter? = null,
-    onClick:()->Unit
+    onClick:()->Unit,
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
+    isFromDescription:Boolean = false
 ) {
 
 
@@ -54,7 +57,7 @@ fun AddUpdateTextField(
                         .clickable { onClick() }
                 )
             },
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(52.dp)
                 .clickable { onClick() },
@@ -63,6 +66,7 @@ fun AddUpdateTextField(
                 fontSize = 14.sp,
                 shadow = Shadow(MaterialTheme.colorScheme.darkText, blurRadius = 1f)
             ),
+            maxLines = if (isFromDescription) Int.MAX_VALUE else 1
         )
     }else{
         OutlinedTextField(
@@ -76,7 +80,7 @@ fun AddUpdateTextField(
                 focusedBorderColor = MaterialTheme.colorScheme.blueWithoutDarkTheme,
             ),
             shape = Shapes().large,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(52.dp)
                 .clickable { onClick() },
@@ -85,6 +89,7 @@ fun AddUpdateTextField(
                 fontSize = 15.sp,
                 shadow = Shadow(MaterialTheme.colorScheme.darkText, blurRadius = 1f)
             ),
+            maxLines = if (isFromDescription) Int.MAX_VALUE else 1
         )
     }
 
