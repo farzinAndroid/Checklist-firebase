@@ -80,10 +80,10 @@ class AuthenticationViewModel @Inject constructor(private val repo: Authenticati
         viewModelScope.launch(Dispatchers.IO) {
             repo.createUserWithGoogleAccount(
                 tokenId=tokenId,
-                onSuccess={id->
+                onSuccess={uid->
                     googleSignInLoading = false
                     isGoogleSignSuccess = true
-                    onSuccess(id)
+                    onSuccess(uid)
                 },
                 onFailure = {message->
                     googleSignInLoading = false

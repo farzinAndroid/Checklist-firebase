@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.farzin.checklist.R
@@ -35,7 +36,7 @@ fun AddTaskButtonSection(onAddClicked:()->Unit, onClearClicked:()->Unit,loadingS
             text =  if (loadingState) stringResource(R.string.please_wait) else stringResource(R.string.edit_task),
             onClick = { onAddClicked() },
             color = MaterialTheme.colorScheme.blueWithoutDarkTheme,
-            textColor = MaterialTheme.colorScheme.darkText,
+            textColor = Color.White,
             modifier = Modifier
                 .weight(0.5f)
                 .height(40.dp)

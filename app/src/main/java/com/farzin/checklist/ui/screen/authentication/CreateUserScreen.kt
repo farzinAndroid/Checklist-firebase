@@ -31,6 +31,7 @@ import com.farzin.checklist.ui.theme.darkText
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.utils.Constants
 import com.farzin.checklist.viewModel.AuthenticationViewModel
+import com.farzin.checklist.viewModel.DataStoreViewModel
 import com.stevdzasan.onetap.OneTapSignInState
 import com.stevdzasan.onetap.OneTapSignInWithGoogle
 
@@ -47,6 +48,7 @@ fun CreateUser(
     navController: NavController,
     authenticationViewModel: AuthenticationViewModel = hiltViewModel(),
     oneTapState: OneTapSignInState,
+    dataStoreViewModel: DataStoreViewModel = hiltViewModel(),
 ) {
 
     val context = LocalContext.current
@@ -121,7 +123,8 @@ fun CreateUser(
             onTokenIdReceived = { tokeId ->
                 authenticationViewModel.createUserWithGoogleAuth(
                     tokenId = tokeId,
-                    onSuccess = {tokenId->
+                    onSuccess = {uid->
+                        dataStoreViewModel.saveUID(uid)
                         navController.navigate(Screens.HomeScreen.route) {
                             launchSingleTop = true
                             popUpTo(Screens.CreateUserScreen.route) {

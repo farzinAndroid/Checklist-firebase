@@ -28,6 +28,7 @@ import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.ui.components.MySpacerHeight
 import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.utils.DigitHelper
+import com.farzin.checklist.viewModel.DataStoreViewModel
 import com.farzin.checklist.viewModel.TaskViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -42,6 +43,7 @@ fun AddUpdateScreen(
     taskId: String,
     navController: NavController,
     taskViewModel: TaskViewModel = hiltViewModel(),
+    dataStoreViewModel: DataStoreViewModel = hiltViewModel(),
 ) {
 
     val context = LocalContext.current
@@ -195,7 +197,7 @@ fun AddUpdateScreen(
                                 .show()
                         } else {
                             taskViewModel.addTask(
-                                userId = Firebase.auth.currentUser?.uid!!,
+                                userId = dataStoreViewModel.getUID().toString(),
                                 dueTime = taskDueTimeText,
                                 dueDate = taskDueDateText,
                                 description = taskDescriptionText,
@@ -240,7 +242,7 @@ fun AddUpdateScreen(
                                 priority = priorityNumber,
                                 title = taskTitleText,
                                 description = taskDescriptionText,
-                                userId = Firebase.auth.currentUser?.uid!!,
+                                userId = dataStoreViewModel.getUID().toString(),
                                 dueDate = taskDueDateText,
                                 dueTime = taskDueTimeText,
                                 subTask = subTasks,

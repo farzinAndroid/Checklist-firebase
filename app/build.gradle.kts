@@ -102,9 +102,9 @@ dependencies {
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
     //room
-    implementation ("androidx.room:room-runtime:2.3.0")
-    kapt ("androidx.room:room-compiler:2.3.0")
-    implementation ("androidx.room:room-ktx:2.3.0")
+//    implementation ("androidx.room:room-runtime:2.3.0")
+//    kapt ("androidx.room:room-compiler:2.3.0")
+//    implementation ("androidx.room:room-ktx:2.3.0")
 
     // One tap compose
     implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
@@ -123,4 +123,8 @@ dependencies {
 //    implementation("com.marosseleng.android:compose-material3-datetime-pickers:0.7.2")
     implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.2.1")
     implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:1.2.1")
+
+
+    //datastore
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
 }

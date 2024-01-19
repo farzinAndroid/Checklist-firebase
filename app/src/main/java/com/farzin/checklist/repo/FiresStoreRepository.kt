@@ -1,5 +1,6 @@
 package com.farzin.checklist.repo
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.farzin.checklist.model.NetworkResult
 import com.farzin.checklist.model.home.Subtask
@@ -102,6 +103,7 @@ class FiresStoreRepository @Inject constructor(
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     fun updateTask(
         task: Task,
         onSuccess: (String) -> Unit,
