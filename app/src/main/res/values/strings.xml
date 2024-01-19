@@ -21,4 +21,5 @@
     <string name="add_sub_task">اضافه کردن وظیفه</string>
     <string name="clear">پاک کردن</string>
     <string name="description">توضیحات</string>
+    <string name="please_fill_out_everything">لطفا همه‌ی اطلاعات را پر کنید</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.farzin.checklist.ui.screen.add_update
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,13 +27,16 @@ import com.farzin.checklist.model.home.Subtask
 import com.farzin.checklist.model.home.Task
 import com.farzin.checklist.ui.components.MySpacerHeight
 import com.farzin.checklist.ui.theme.mainBackground
+import com.farzin.checklist.utils.DigitHelper
 import com.farzin.checklist.viewModel.TaskViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AddUpdateScreen(
     taskId: String,
@@ -101,7 +104,11 @@ fun AddUpdateScreen(
             .background(MaterialTheme.colorScheme.mainBackground),
     ) {
 
-        stickyHeader { AddUpdateTopBar(titleText = titleText, onClick = { navController.popBackStack() }) }
+        stickyHeader {
+            AddUpdateTopBar(
+                titleText = titleText,
+                onClick = { navController.popBackStack() })
+        }
 
         item { MySpacerHeight(height = 12.dp) }
 
@@ -118,7 +125,7 @@ fun AddUpdateScreen(
 
         item {
             TaskTitleSection(
-                textValue = taskDueDateText,
+                textValue = DigitHelper.digitByLang(taskDueDateText),
                 onTextValueChanged = {},
                 title = stringResource(R.string.due_date),
                 icon = painterResource(R.drawable.calendar),
@@ -132,7 +139,7 @@ fun AddUpdateScreen(
 
         item {
             TaskTitleSection(
-                textValue = taskDueTimeText,
+                textValue = DigitHelper.digitByLang(taskDueTimeText),
                 onTextValueChanged = {},
                 title = stringResource(R.string.due_time),
                 icon = painterResource(R.drawable.clock),
@@ -157,7 +164,6 @@ fun AddUpdateScreen(
                 subtask = if (taskId.isNotEmpty()) subTasks else emptyList(),
                 subtaskCallback = {
                     subTasks = it
-                    Log.e("TAG", subTasks.toString())
                 }
             )
         }
@@ -178,19 +184,40 @@ fun AddUpdateScreen(
             item {
                 AddTaskButtonSection(
                     onAddClicked = {
-                        taskViewModel.addTask(
-                            userId = Firebase.auth.currentUser?.uid!!,
-                            dueTime = taskDueTimeText,
-                            dueDate = taskDueDateText,
-                            description = taskDescriptionText,
-                            title = taskTitleText,
-                            priority = priorityNumber,
-                            subTasks = subTasks
-                        )
+                        if (taskTitleText.isEmpty() || taskDueDateText.isEmpty() || taskDueTimeText.isEmpty() ||
+                            priorityNumber == -1 || subTasks.isEmpty() || taskDescriptionText.isEmpty()
+                        ) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.please_fill_out_everything),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else {
+                            taskViewModel.addTask(
+                                userId = Firebase.auth.currentUser?.uid!!,
+                                dueTime = taskDueTimeText,
+                                dueDate = taskDueDateText,
+                                description = taskDescriptionText,
+                                title = taskTitleText,
+                                priority = priorityNumber,
+                                subTasks = subTasks
+                            )
+
+                            scope.launch {
+                                delay(300)
+                                navController.popBackStack()
+                            }
+                        }
+
                     },
                     onClearClicked = {
-
-                    }
+                        taskTitleText = ""
+                        taskDueDateText = ""
+                        taskDueTimeText = ""
+                        taskDescriptionText = ""
+                    },
+                    loadingState = taskViewModel.addTaskLoading
                 )
             }
         } else {
@@ -198,25 +225,46 @@ fun AddUpdateScreen(
                 UpdateTaskButtonSection(
                     onEditClicked = {
 
-                        val updatedTask = Task(
-                            taskId = taskId,
-                            priority = priorityNumber,
-                            title = taskTitleText,
-                            description = taskDescriptionText,
-                            userId = Firebase.auth.currentUser?.uid!!,
-                            dueDate = taskDueDateText,
-                            dueTime = taskDueTimeText,
-                            subTask = subTasks,
-                        )
+                        if (taskTitleText.isEmpty() || taskDueDateText.isEmpty() || taskDueTimeText.isEmpty() ||
+                            priorityNumber == -1 || subTasks.isEmpty() || taskDescriptionText.isEmpty()
+                        ) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.please_fill_out_everything),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else {
+                            val updatedTask = Task(
+                                taskId = taskId,
+                                priority = priorityNumber,
+                                title = taskTitleText,
+                                description = taskDescriptionText,
+                                userId = Firebase.auth.currentUser?.uid!!,
+                                dueDate = taskDueDateText,
+                                dueTime = taskDueTimeText,
+                                subTask = subTasks,
+                            )
 
-                        taskViewModel.updateTask(
-                            task = updatedTask
-                        )
+                            taskViewModel.updateTask(
+                                task = updatedTask
+                            )
+
+                            scope.launch {
+                                delay(300)
+                                navController.popBackStack()
+                            }
+                        }
+
 
                     },
                     onClearClicked = {
-
-                    }
+                        taskTitleText = ""
+                        taskDueDateText = ""
+                        taskDueTimeText = ""
+                        taskDescriptionText = ""
+                    },
+                    loadingState = taskViewModel.updateTaskLoading
                 )
             }
         }

@@ -52,7 +52,7 @@ fun datePicker(context:Context,onDatePickerSucceed:(String)->Unit) {
                     "${persianPickerDate.persianYear}/${persianPickerDate.persianMonth}/${persianPickerDate.persianDay}",
                     Toast.LENGTH_SHORT
                 ).show()
-                onDatePickerSucceed("${persianPickerDate.persianYear} / ${persianPickerDate.persianMonth} / ${persianPickerDate.persianDay}")
+                onDatePickerSucceed("${persianPickerDate.persianYear}/${persianPickerDate.persianMonth}/${persianPickerDate.persianDay}")
             }
 
             override fun onDismissed() {

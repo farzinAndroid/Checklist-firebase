@@ -1,6 +1,5 @@
 package com.farzin.checklist.ui.screen.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.DismissDirection
@@ -48,7 +48,6 @@ import com.farzin.checklist.ui.theme.mainBackground
 import com.farzin.checklist.viewModel.AuthenticationViewModel
 import com.farzin.checklist.viewModel.TaskViewModel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -103,12 +102,11 @@ fun Home(
                     .padding(bottom = 80.dp),
                 state = rememberLazyListState(),
             ) {
-                items(tasks, key = {it.taskId}) { task ->
+                items(tasks.reversed(), key = { it.taskId }) { task ->
 
                     val swipeToDismissState = rememberDismissState(
                         confirmValueChange = { it ->
                             if (it == DismissValue.DismissedToStart) {
-                                Log.e("TAG", "update")
                                 val updatedTask = task.copy(subTask = task.subTask.map {
                                     it.copy(subtaskCompleted = true)
                                 })
@@ -118,7 +116,6 @@ fun Home(
                             }
 
                             if (it == DismissValue.DismissedToEnd) {
-                                Log.e("TAG", "delete")
                                 taskViewModel.deleteTask(task)
                             }
                             true
@@ -161,14 +158,16 @@ fun Home(
                                     contentDescription = "",
                                     modifier = Modifier
                                         .align(Alignment.CenterStart)
+                                        .padding(start = 8.dp)
                                 )
 
 
                                 Icon(
-                                    imageVector = Icons.Filled.Edit,
+                                    imageVector = Icons.Filled.CheckCircle,
                                     contentDescription = "",
                                     modifier = Modifier
                                         .align(Alignment.CenterEnd)
+                                        .padding(end = 8.dp)
                                 )
                             }
                         },

@@ -18,7 +18,7 @@ import com.farzin.checklist.ui.theme.darkText
 import com.farzin.checklist.ui.theme.softgray
 
 @Composable
-fun UpdateTaskButtonSection(onEditClicked:()->Unit,onClearClicked:()->Unit) {
+fun UpdateTaskButtonSection(onEditClicked:()->Unit,onClearClicked:()->Unit,loadingState:Boolean) {
 
 
     Row(
@@ -32,7 +32,7 @@ fun UpdateTaskButtonSection(onEditClicked:()->Unit,onClearClicked:()->Unit) {
     ) {
 
         EditTaskButton(
-            text = stringResource(R.string.edit_task),
+            text = if (loadingState) stringResource(R.string.please_wait) else stringResource(R.string.edit_task),
             onClick = { onEditClicked() },
             color = MaterialTheme.colorScheme.blueWithoutDarkTheme,
             textColor = MaterialTheme.colorScheme.darkText,

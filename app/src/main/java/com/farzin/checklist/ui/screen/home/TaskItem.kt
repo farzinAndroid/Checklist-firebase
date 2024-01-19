@@ -1,6 +1,5 @@
 package com.farzin.checklist.ui.screen.home
 
-import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,6 +34,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.farzin.checklist.R
@@ -73,7 +73,7 @@ fun TaskItem(
     }
 
 
-    val progress2 by animateFloatAsState(progress, label = "")
+    val animateProgress by animateFloatAsState(progress, label = "")
 
     val color = when (task.priority) {
         1 -> {
@@ -130,7 +130,7 @@ fun TaskItem(
                 ) {
 
                     CircularProgressBar(
-                        progress = progress2,
+                        progress = animateProgress,
                         modifier = Modifier
                             .fillMaxSize()
                             .border(
@@ -147,9 +147,9 @@ fun TaskItem(
                     )
 
                     Text(
-                        text = "${DigitHelper.digitByLang(progress2.toInt().toString())}%",
+                        text = "${DigitHelper.digitByLang(animateProgress.toInt().toString())}%",
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.darkText,
+                        color = if (animateProgress == 100f) MaterialTheme.colorScheme.softgray else MaterialTheme.colorScheme.darkText,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -168,12 +168,13 @@ fun TaskItem(
                         text = task.title,
                         style = MaterialTheme.typography.displaySmall,
                         maxLines = 1,
-                        color = MaterialTheme.colorScheme.darkText,
+                        color = if (animateProgress == 100f) MaterialTheme.colorScheme.softgray else MaterialTheme.colorScheme.darkText,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        textDecoration = if (animateProgress == 100f) TextDecoration.LineThrough else null
                     )
 
 
@@ -182,6 +183,7 @@ fun TaskItem(
                         style = MaterialTheme.typography.veryExtraSmall,
                         color = MaterialTheme.colorScheme.softgray,
                         fontWeight = FontWeight.Bold,
+                        textDecoration = if (animateProgress == 100f) TextDecoration.LineThrough else null
                     )
 
                 }
